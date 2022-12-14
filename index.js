@@ -176,7 +176,7 @@ async function main () {
       }
       core.info(`[OK] Commit ${commit.sha} of type ${cAst.type} - ${cAst.subject}`)
     } catch (err) {
-      if (includeInvalidCommits) {
+      if (includeInvalidCommits || commit.commit.message.startsWith("feat:") ||commit.commit.message.startsWith("fix:") ||commit.commit.message.startsWith("docs:")) {
         commitsParsed.push({
           type: 'other',
           subject: commit.commit.message,
