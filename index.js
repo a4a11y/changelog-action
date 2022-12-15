@@ -67,7 +67,7 @@ async function main () {
   let previousTag = null
 
   if (tag && (fromTag || toTag)) {
-    return core.setFailed(`Must provide EITHER input tag OR (fromTag and toTag), not both!`)
+    return core.info(`Must provide EITHER input tag OR (fromTag and toTag), not both!`)
   } else if (tag) {
 
     // GET LATEST + PREVIOUS TAGS
@@ -96,14 +96,14 @@ async function main () {
     previousTag = _.get(tagsRaw, 'repository.refs.nodes[1]')
 
     if (!latestTag) {
-      return core.setFailed('Couldn\'t find the latest tag. Make sure you have an existing tag already before creating a new one.')
+      return core.info('Couldn\'t find the latest tag. Make sure you have an existing tag already before creating a new one.')
     }
     if (!previousTag) {
-      return core.setFailed('Couldn\'t find a previous tag. Make sure you have at least 2 tags already (current tag + previous initial tag).')
+      return core.info('Couldn\'t find a previous tag. Make sure you have at least 2 tags already (current tag + previous initial tag).')
     }
 
     if (latestTag.name !== tag) {
-      return core.setFailed(`Provided tag doesn\'t match latest tag ${tag}.`)
+      return core.info(`Provided tag doesn\'t match latest tag ${tag}.`)
     }
 
     core.info(`Using latest tag: ${latestTag.name}`)
@@ -117,7 +117,7 @@ async function main () {
 
     core.info(`Using tag range: ${fromTag} to ${toTag}`)
   } else {
-    return core.setFailed(`Must provide either input tag OR (fromTag and toTag). None were provided!`)
+    return core.info(`Must provide either input tag OR (fromTag and toTag). None were provided!`)
   }
 
   // GET COMMITS
@@ -145,7 +145,7 @@ async function main () {
   } while (hasMoreCommits)
 
   if (!commits || commits.length < 1) {
-    return core.setFailed('Couldn\'t find any commits between latest and previous tags.')
+    return core.info('Couldn\'t find any commits between latest and previous tags.')
   }
 
   // PARSE COMMITS
@@ -192,7 +192,7 @@ async function main () {
   }
 
   if (commitsParsed.length < 1) {
-    return core.setFailed('No valid commits parsed since previous tag.')
+    return core.info('No valid commits parsed since previous tag.')
   }
 
   // BUILD CHANGELOG
